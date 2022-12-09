@@ -17,7 +17,7 @@ public struct CalculateSides
         for (int i = 0; i < 4; i++)
         {
             sides.edges1[i] = GetRandomBool();
-            sides.edges1[i] = sides.edges[i];
+            sides.edges[i] = sides.edges1[i];
             sides.color[i] = GetRandomColor(sides);
         }
 
@@ -35,7 +35,7 @@ public struct CalculateSides
         sides.color[index] = sidesState.color[index+2];
     }
 
-    private bool GetRandomBool() => Random.Range(0, 2) == 0;
+    private bool GetRandomBool() => Random.Range(0, 2) == 1;
 
     private Color GetRandomColor(SidesState sidesState) => sidesState.color[Random.Range(0, 4)];
 
