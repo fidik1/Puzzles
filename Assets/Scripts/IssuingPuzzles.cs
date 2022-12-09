@@ -4,35 +4,35 @@ using UnityEngine;
 
 public class IssuingPuzzles : MonoBehaviour
 {
-    [SerializeField] private Transform _parent;
+    [SerializeField] private RectTransform _parent;
+    [SerializeField] private CountPlacedPuzzles _countPlacedPuzzles;
     private readonly List<Puzzle> _puzzles = new(); 
     private int _currentIndex;
 
     private void Start()
     {
+        Grabber.Instance.IsGrabbed += SetSize;
+        SetSize();
         int index = 0;
         foreach (Puzzle puzzle in World.Instance.PuzzleManager.GetPuzzles())
         {
             if (index == World.Instance.PuzzleManager.GetPuzzles().Length / 2)
-                puzzle.PuzzlePlace.SetPlaced();
+                puzzle.PuzzlePlace.Place();
             else
-            {
                 _puzzles.Add(puzzle);
-                puzzle.transform.position = new Vector3(0, -4000);
-            }
-            puzzle.PuzzlePlace.FirstGrabbed += AddPuzzleToParent;
             index++;
         }
         Shaffle(_puzzles);
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < _puzzles.Count; i++)
         {
-            AddPuzzleToParent(_puzzles[^1].PuzzlePlace);
+            AddPuzzleToParent();
         }
     }
 
-    private void AddPuzzleToParent(PuzzlePlace puzzlePlace)
+    private void SetSize() => _parent.sizeDelta = new(175 * (World.Instance.PuzzleManager.GetPuzzles().Length - _countPlacedPuzzles.GetPlacedPuzzles().Count), _parent.sizeDelta.y);
+
+    private void AddPuzzleToParent()
     {
-        puzzlePlace.FirstGrabbed -= AddPuzzleToParent;
         if (_currentIndex >= _puzzles.Count) return;
         _puzzles[_currentIndex].transform.SetParent(_parent);
         _puzzles[_currentIndex].transform.localScale = new Vector3(0.75f, 0.75f, 0.75f);

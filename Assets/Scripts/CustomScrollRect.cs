@@ -4,11 +4,21 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class CustomScrollRect : ScrollRect
-{    
+{
+    private bool _canDrag = true;
+
+    protected override void Start()
+    {
+        base.Start();
+        Grabber.Instance.IsGrabbed += Grabbed;
+    }
+
+    private void Grabbed() => _canDrag = false;
+
     public override void OnDrag(PointerEventData eventData) 
     {
         base.OnDrag(eventData);
-        if (Input.GetTouch(0).position.y > Screen.height / 8 + 100)
+        if (!_canDrag)
             horizontal = false;
     }
     
@@ -16,5 +26,6 @@ public class CustomScrollRect : ScrollRect
     {
         base.OnEndDrag(eventData);
         horizontal = true;
+        _canDrag = true;
     }
 }

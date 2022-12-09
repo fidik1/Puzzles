@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class PuzzleManager
 {
@@ -20,16 +21,22 @@ public class PuzzleManager
     private readonly int maxX, maxY;
 
     private readonly CalculateSides _calculateSides;
+    private readonly SlotsManager _slotsManager;
 
     private Vector3 _scale;
-    public PuzzleManager(Color32[] color, Puzzle puzzlePrefab, PuzzleSlot puzzleSlotPrefab, Transform parent)
+
+    public Action<SlotsManager, PuzzleManager> GenerationFinished;
+
+    public PuzzleManager(Color32[] color, Puzzle puzzlePrefab, PuzzleSlot puzzleSlotPrefab, Transform parent, SlotsManager slotsManager)
     {
         _calculateSides = new(color);
         _prefabPuzzle = puzzlePrefab;
         _prefabSlot = puzzleSlotPrefab;
         _puzzleParent = parent;
-        maxX = Random.Range(_minFieldX, _maxFieldX+1);
-        maxY = Random.Range(_minFieldY, _maxFieldY+1);
+        _slotsManager = slotsManager;
+
+        maxX = UnityEngine.Random.Range(_minFieldX, _maxFieldX+1);
+        maxY = UnityEngine.Random.Range(_minFieldY, _maxFieldY+1);
         _puzzles = new Puzzle[maxX, maxY];
 
         _scale = new Vector2(1, 0);
@@ -52,12 +59,15 @@ public class PuzzleManager
                 SetScaleAndSize(puzzleSlot, new Vector2(i * _offset + _offset / 2, j * _offset + _offset / 2));
 
                 _puzzles[i, j] = puzzle;
+                _slotsManager.AddSlot(puzzleSlot);
 
                 puzzle.Init(CalculateSides(GetLastSidesState(i, j), GetLeftSidesState(i, j), i, j));
+                GenerationFinished += puzzle.PuzzlePlace.OnGenerationFinished;
                 puzzle.PuzzlePlace.SetScale(_scale);
                 puzzle.PuzzlePlace.SetSlot(puzzleSlot.gameObject);
             }
         }
+        GenerationFinished?.Invoke(_slotsManager, this);
     }
 
     private void SetPosParent() => _puzzleParent.localPosition = new(_offset * maxX / 2 - _offset * maxX, _offset * maxY / 2 - _offset * maxY);

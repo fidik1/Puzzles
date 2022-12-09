@@ -11,6 +11,7 @@ public class World : MonoBehaviour
     [SerializeField] private Color32[] _color;
 
     public PuzzleManager PuzzleManager { get; private set; }
+    public SlotsManager SlotsManager { get; private set; }
 
     public static World Instance;
 
@@ -18,6 +19,7 @@ public class World : MonoBehaviour
     {
         if (Instance == null) Instance = this;
 
-        PuzzleManager = new(_color, _puzzlePrefab, _puzzlesSlot, _puzzleParent);
+        SlotsManager = new(new List<PuzzleSlot>());
+        PuzzleManager = new(_color, _puzzlePrefab, _puzzlesSlot, _puzzleParent, SlotsManager);
     }
 }

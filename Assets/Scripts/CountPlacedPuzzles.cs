@@ -27,4 +27,6 @@ public class CountPlacedPuzzles : MonoBehaviour
         _text.text = _puzzlesPlaced.Count + " / " + _maxPuzzles;
         if (_puzzlesPlaced.Count == _maxPuzzles) AllPuzzlesPlaced?.Invoke();
     }
+
+    public List<PuzzlePlace> GetPlacedPuzzles() => _puzzlesPlaced;
 }
