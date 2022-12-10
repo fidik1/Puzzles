@@ -6,6 +6,7 @@ using System;
 public class PuzzlePlace : MonoBehaviour
 {
     [field: SerializeField] public bool IsPlaced { get; private set; }
+    private SidesState _sidesState;
 
     [SerializeField] private Animator _animator;
 
@@ -90,7 +91,7 @@ public class PuzzlePlace : MonoBehaviour
         _scale = transform.localScale;
         _startIndex = transform.GetSiblingIndex();
         _rectTransform.localScale = Vector3.one;
-        if (_nearest != null) _nearest.OnRemove();
+        if (_nearest != null && _nearest.PuzzlePlace == this) _nearest.OnRemove();
     }
 
     public void Place()
@@ -102,7 +103,7 @@ public class PuzzlePlace : MonoBehaviour
             {
                 transform.position = _nearest.transform.position;
                 _nearest.OnPlace(this);
-                if (Vector2.Distance(transform.position, _slot.transform.position) < 15)
+                if (Vector2.Distance(transform.position, _slot.transform.position) < 15 && _sidesState == _nearest.SidesState)
                 {
                     transform.position = _slot.transform.position;
                     SetPlaced();
@@ -119,7 +120,11 @@ public class PuzzlePlace : MonoBehaviour
         }
     }
 
-    public void SetSlot(GameObject slot) => _slot = slot;
+    public void Init(GameObject slot, SidesState sidesState)
+    {
+        _slot = slot;
+        _sidesState = sidesState;
+    }
 
     public void OnGenerationFinished(SlotsManager slotsManager, PuzzleManager puzzleManager)
     {

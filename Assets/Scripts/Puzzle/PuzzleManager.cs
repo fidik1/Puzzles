@@ -62,9 +62,11 @@ public class PuzzleManager
                 _slotsManager.AddSlot(puzzleSlot);
 
                 puzzle.Init(CalculateSides(GetLastSidesState(i, j), GetLeftSidesState(i, j), i, j));
+                puzzleSlot.SetSidesState(puzzle.SidesState);
+
                 GenerationFinished += puzzle.PuzzlePlace.OnGenerationFinished;
                 puzzle.PuzzlePlace.SetScale(_scale);
-                puzzle.PuzzlePlace.SetSlot(puzzleSlot.gameObject);
+                puzzle.PuzzlePlace.Init(puzzleSlot.gameObject, puzzle.SidesState);
             }
         }
         GenerationFinished?.Invoke(_slotsManager, this);
