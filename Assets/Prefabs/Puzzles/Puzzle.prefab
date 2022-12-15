@@ -314,7 +314,6 @@ MonoBehaviour:
   <IsPlaced>k__BackingField: 0
   _animator: {fileID: 9115767137205049590}
   isGrabbed: 0
-  _parent: {fileID: 1298086400657211511}
   _rectTransform: {fileID: 1298086400657211511}
 --- !u!61 &-8274081465922015997
 BoxCollider2D:

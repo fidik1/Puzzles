@@ -1,43 +1,39 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public class PuzzleManager
+public class PuzzleManager : MonoBehaviour
 {
-    private readonly Puzzle[,] _puzzles;
+    private Puzzle[,] _puzzles;
 
-    private readonly int _minFieldX = 3;
-    private readonly int _maxFieldX = 5;
-    private readonly int _minFieldY = 4;
-    private readonly int _maxFieldY = 8;
+    [SerializeField] private Color32[] _color;
 
-    private readonly float _offset = 175;
+    [SerializeField] private int _minFieldX = 3;
+    [SerializeField] private int _maxFieldX = 5;
+    [SerializeField] private int _minFieldY = 4;
+    [SerializeField] private int _maxFieldY = 8;
 
-    private readonly Puzzle _prefabPuzzle;
-    private readonly PuzzleSlot _prefabSlot;
-    private readonly Transform _puzzleParent;
+    [SerializeField] private float _offset = 175;
 
-    private readonly int maxX, maxY;
+    [SerializeField] private Puzzle _prefabPuzzle;
+    [SerializeField] private PuzzleSlot _prefabSlot;
+    [SerializeField] private Transform _puzzleParent;
 
-    private readonly CalculateSides _calculateSides;
-    private readonly SlotsManager _slotsManager;
+    private int _maxX, _maxY;
+
+    private CalculateSides _calculateSides;
+    public SlotsController SlotsManager { get; private set; } = new();
 
     private Vector3 _scale;
 
-    public Action<SlotsManager, PuzzleManager> GenerationFinished;
+    public Action<SlotsController, PuzzleManager> GenerationFinished;
 
-    public PuzzleManager(Color32[] color, Puzzle puzzlePrefab, PuzzleSlot puzzleSlotPrefab, Transform parent, SlotsManager slotsManager)
+    private void Start()
     {
-        _calculateSides = new(color);
-        _prefabPuzzle = puzzlePrefab;
-        _prefabSlot = puzzleSlotPrefab;
-        _puzzleParent = parent;
-        _slotsManager = slotsManager;
+        _calculateSides = new(_color);
 
-        maxX = UnityEngine.Random.Range(_minFieldX, _maxFieldX+1);
-        maxY = UnityEngine.Random.Range(_minFieldY, _maxFieldY+1);
-        _puzzles = new Puzzle[maxX, maxY];
+        _maxX = UnityEngine.Random.Range(_minFieldX, _maxFieldX+1);
+        _maxY = UnityEngine.Random.Range(_minFieldY, _maxFieldY+1);
+        _puzzles = new Puzzle[_maxX, _maxY];
 
         _scale = new Vector2(1, 0);
         _scale.y = _scale.x;
@@ -48,9 +44,9 @@ public class PuzzleManager
 
     private void GeneratePuzzle()
     {
-        for (int i = 0; i < maxX; i++)
+        for (int i = 0; i < _maxX; i++)
         {
-            for (int j = 0; j < maxY; j++)
+            for (int j = 0; j < _maxY; j++)
             {
                 Puzzle puzzle = CreatePiece();
                 PuzzleSlot puzzleSlot = CreateSlot();
@@ -59,7 +55,7 @@ public class PuzzleManager
                 SetScaleAndSize(puzzleSlot, new Vector2(i * _offset + _offset / 2, j * _offset + _offset / 2));
 
                 _puzzles[i, j] = puzzle;
-                _slotsManager.AddSlot(puzzleSlot);
+                SlotsManager.AddSlot(puzzleSlot);
 
                 puzzle.Init(CalculateSides(GetLastSidesState(i, j), GetLeftSidesState(i, j), i, j));
                 puzzleSlot.SetSidesState(puzzle.SidesState);
@@ -69,10 +65,10 @@ public class PuzzleManager
                 puzzle.PuzzlePlace.Init(puzzleSlot.gameObject, puzzle.SidesState);
             }
         }
-        GenerationFinished?.Invoke(_slotsManager, this);
+        GenerationFinished?.Invoke(SlotsManager, this);
     }
 
-    private void SetPosParent() => _puzzleParent.localPosition = new(_offset * maxX / 2 - _offset * maxX, _offset * maxY / 2 - _offset * maxY);
+    private void SetPosParent() => _puzzleParent.localPosition = new(_offset * _maxX / 2 - _offset * _maxX, _offset * _maxY / 2 - _offset * _maxY);
 
     private void SetScaleAndSize(IPuzzle puzzle, Vector2 pos)
     {
@@ -86,7 +82,7 @@ public class PuzzleManager
 
     public Puzzle[,] GetPuzzles() => _puzzles;
 
-    private SidesState CalculateSides(SidesState lastState, SidesState leftState, int i, int j) => _calculateSides.Calculate(lastState, leftState, i, j, maxX - 1, maxY - 1);
+    private SidesState CalculateSides(SidesState lastState, SidesState leftState, int i, int j) => _calculateSides.Calculate(lastState, leftState, i, j, _maxX - 1, _maxY - 1);
 
     private SidesState GetLastSidesState(int i, int j)
     {

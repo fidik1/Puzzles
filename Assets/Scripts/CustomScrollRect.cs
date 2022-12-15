@@ -1,17 +1,10 @@
-using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using System.Collections;
 
 public class CustomScrollRect : ScrollRect
 {
     private bool _canDrag = true;
-
-    protected override void Start()
-    {
-        base.Start();
-        Grabber.Instance.IsGrabbed += Grabbed;
-    }
+    private Grabber _grabber;
 
     private void Grabbed() => _canDrag = false;
 
@@ -27,5 +20,18 @@ public class CustomScrollRect : ScrollRect
         base.OnEndDrag(eventData);
         horizontal = true;
         _canDrag = true;
+    }
+
+    protected override void Start()
+    {
+        base.Start();
+        _grabber = Grabber.Instance;
+        _grabber.IsGrabbed += Grabbed;
+    }
+
+    protected override void OnDestroy()
+    {
+        base.OnDestroy();
+        _grabber.IsGrabbed -= Grabbed;
     }
 }

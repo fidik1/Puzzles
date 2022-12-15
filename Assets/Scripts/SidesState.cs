@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SidesState
 {
-    public bool[] edges = new bool[4];
-    public bool[] edges1 = new bool[4];
+    public bool[] edgesInner = new bool[4];
+    public bool[] edgesOuter = new bool[4];
     public Color32[] color = new Color32[4];
 }

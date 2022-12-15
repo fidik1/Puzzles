@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -33,9 +31,9 @@ public class Puzzle : MonoBehaviour, IPuzzle
     {
         for (int i = 0; i < _edges.Length; i++)
         {
-            _edges[i].gameObject.SetActive(SidesState.edges[i]);
+            _edges[i].gameObject.SetActive(SidesState.edgesInner[i]);
             _edges[i].color = SidesState.color[i];
-            _edges1[i].gameObject.SetActive(SidesState.edges1[i]);
+            _edges1[i].gameObject.SetActive(SidesState.edgesOuter[i]);
             _edges1[i].color = SidesState.color[i];
         }
     }

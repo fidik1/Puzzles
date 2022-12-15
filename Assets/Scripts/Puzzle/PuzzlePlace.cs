@@ -26,9 +26,8 @@ public class PuzzlePlace : MonoBehaviour
 
     private Vector3 _size;
 
-    private Vector2 _startPos;
+    private Vector2 _startPos, _scale, _lastTouchPos;
     private Transform _startParent;
-    private Vector2 _scale;
     private int _startIndex;
 
     private void Awake() => _parent = transform.parent;
@@ -45,7 +44,10 @@ public class PuzzlePlace : MonoBehaviour
                 FirstGrab();
             }
             if (Input.touchCount > 0)
-                transform.position = Input.GetTouch(0).position;
+            {
+                _lastTouchPos = Input.GetTouch(0).position;
+                transform.position = _lastTouchPos;
+            }
             else
                 isGrabbed = false;
         }
@@ -110,14 +112,17 @@ public class PuzzlePlace : MonoBehaviour
                 }
             }
         }
-        else
-        {
-            transform.SetParent(_startParent);
-            transform.localPosition = _startPos;
-            transform.localScale = _scale;
-            transform.SetSiblingIndex(_startIndex);
-            _nearest = FindSlot();
-        }
+        else if (_lastTouchPos.y <= Screen.width / 4 || _nearest != null)
+            ReturnToPlace();
+    }
+
+    private void ReturnToPlace()
+    {
+        transform.SetParent(_startParent);
+        transform.localPosition = _startPos;
+        transform.localScale = _scale;
+        transform.SetSiblingIndex(_startIndex);
+        _nearest = FindSlot();
     }
 
     public void Init(GameObject slot, SidesState sidesState)
@@ -126,7 +131,7 @@ public class PuzzlePlace : MonoBehaviour
         _sidesState = sidesState;
     }
 
-    public void OnGenerationFinished(SlotsManager slotsManager, PuzzleManager puzzleManager)
+    public void OnGenerationFinished(SlotsController slotsManager, PuzzleManager puzzleManager)
     {
         puzzleManager.GenerationFinished -= OnGenerationFinished;
         _puzzleSlots = slotsManager.GetSlots();

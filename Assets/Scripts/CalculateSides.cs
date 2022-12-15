@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public struct CalculateSides
@@ -16,8 +14,8 @@ public struct CalculateSides
 
         for (int i = 0; i < 4; i++)
         {
-            sides.edges1[i] = GetRandomBool();
-            sides.edges[i] = sides.edges1[i];
+            sides.edgesOuter[i] = GetRandomBool();
+            sides.edgesInner[i] = sides.edgesOuter[i];
             sides.color[i] = GetRandomColor(sides);
         }
 
@@ -30,8 +28,8 @@ public struct CalculateSides
 
     private void InvertSides(int index, SidesState sides, SidesState sidesState)
     {
-        sides.edges[index] = !sidesState.edges[index+2];
-        sides.edges1[index] = !sidesState.edges[index+2];
+        sides.edgesInner[index] = !sidesState.edgesInner[index+2];
+        sides.edgesOuter[index] = !sidesState.edgesInner[index+2];
         sides.color[index] = sidesState.color[index+2];
     }
 
@@ -53,8 +51,8 @@ public struct CalculateSides
 
     private void EdgeOff(SidesState sides, int index)
     {
-        sides.edges[index] = true;
+        sides.edgesInner[index] = true;
         sides.color[index] = Color.white;
-        sides.edges1[index] = false;
+        sides.edgesOuter[index] = false;
     }
 }

@@ -771,6 +771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _text: {fileID: 620664479}
+  _puzzleManager: {fileID: 1599275606}
 --- !u!114 &620664479
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1248,38 +1249,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1599275605}
-  - component: {fileID: 1599275604}
+  - component: {fileID: 1599275606}
   m_Layer: 0
-  m_Name: World
+  m_Name: PuzzleManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1599275604
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1599275603}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ab24a89f28abf314ba1793f7d266bcf3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _puzzlePrefab: {fileID: 5806576090019927224, guid: 70d9e5a1827c7bb4bb08494fd9349baa, type: 3}
-  _puzzlesSlot: {fileID: 7570784521830042146, guid: d9681b223c5a8134faa0576c7cd67e43, type: 3}
-  _puzzleParent: {fileID: 1145686067}
-  _color:
-  - serializedVersion: 2
-    rgba: 4286120191
-  - serializedVersion: 2
-    rgba: 4282117119
-  - serializedVersion: 2
-    rgba: 4281073433
-  - serializedVersion: 2
-    rgba: 4294930472
 --- !u!4 &1599275605
 Transform:
   m_ObjectHideFlags: 0
@@ -1295,6 +1272,35 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1599275606
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1599275603}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8377d0d00535824d86291d2327ae5e1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _color:
+  - serializedVersion: 2
+    rgba: 4281414143
+  - serializedVersion: 2
+    rgba: 4281784319
+  - serializedVersion: 2
+    rgba: 4282187577
+  - serializedVersion: 2
+    rgba: 4294920246
+  _minFieldX: 4
+  _maxFieldX: 5
+  _minFieldY: 4
+  _maxFieldY: 8
+  _offset: 175
+  _prefabPuzzle: {fileID: 5806576090019927224, guid: 70d9e5a1827c7bb4bb08494fd9349baa, type: 3}
+  _prefabSlot: {fileID: 7570784521830042146, guid: d9681b223c5a8134faa0576c7cd67e43, type: 3}
+  _puzzleParent: {fileID: 1145686067}
 --- !u!1 &1666398106
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,3 +1632,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _parent: {fileID: 180411676}
   _countPlacedPuzzles: {fileID: 620664478}
+  _puzzleManager: {fileID: 1599275606}

@@ -7,14 +7,15 @@ public class CountPlacedPuzzles : MonoBehaviour
 {
     private readonly List<PuzzlePlace> _puzzlesPlaced = new();
     [SerializeField] private TMP_Text _text;
+    [SerializeField] private PuzzleManager _puzzleManager;
     private int _maxPuzzles;
 
     public Action AllPuzzlesPlaced;
 
     private void Start()
     {
-        _maxPuzzles = World.Instance.PuzzleManager.GetPuzzles().Length;
-        foreach (Puzzle puzzle in World.Instance.PuzzleManager.GetPuzzles())
+        _maxPuzzles = _puzzleManager.GetPuzzles().Length;
+        foreach (Puzzle puzzle in _puzzleManager.GetPuzzles())
         {
             puzzle.PuzzlePlace.Placed += PuzzlePlaced;
         }

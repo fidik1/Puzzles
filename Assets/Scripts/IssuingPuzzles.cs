@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,6 +5,7 @@ public class IssuingPuzzles : MonoBehaviour
 {
     [SerializeField] private RectTransform _parent;
     [SerializeField] private CountPlacedPuzzles _countPlacedPuzzles;
+    [SerializeField] private PuzzleManager _puzzleManager;
     private readonly List<Puzzle> _puzzles = new(); 
     private int _currentIndex;
 
@@ -14,9 +14,9 @@ public class IssuingPuzzles : MonoBehaviour
         Grabber.Instance.IsGrabbed += SetSize;
         SetSize();
         int index = 0;
-        foreach (Puzzle puzzle in World.Instance.PuzzleManager.GetPuzzles())
+        foreach (Puzzle puzzle in _puzzleManager.GetPuzzles())
         {
-            if (index == World.Instance.PuzzleManager.GetPuzzles().Length / 2)
+            if (index == _puzzleManager.GetPuzzles().Length / 2)
                 puzzle.PuzzlePlace.Place();
             else
                 _puzzles.Add(puzzle);
@@ -29,7 +29,7 @@ public class IssuingPuzzles : MonoBehaviour
         }
     }
 
-    private void SetSize() => _parent.sizeDelta = new(175 * (World.Instance.PuzzleManager.GetPuzzles().Length - _countPlacedPuzzles.GetPlacedPuzzles().Count), _parent.sizeDelta.y);
+    private void SetSize() => _parent.sizeDelta = new(175 * (_puzzleManager.GetPuzzles().Length - _countPlacedPuzzles.GetPlacedPuzzles().Count), _parent.sizeDelta.y);
 
     private void AddPuzzleToParent()
     {
