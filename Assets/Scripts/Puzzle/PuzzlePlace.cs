@@ -5,6 +5,8 @@ using System;
 
 public class PuzzlePlace : MonoBehaviour
 {
+    [SerializeField] private GameObject _particle;
+
     [field: SerializeField] public bool IsPlaced { get; private set; }
     private SidesState _sidesState;
 
@@ -67,7 +69,7 @@ public class PuzzlePlace : MonoBehaviour
     {
         IsPlaced = true;
         Placed?.Invoke(this);
-
+        Instantiate(_particle, transform.position, Quaternion.identity);
         StartCoroutine(PlayAnim());
     }
 

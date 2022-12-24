@@ -27,7 +27,7 @@ public class PuzzleManager : MonoBehaviour
 
     public Action<SlotsController, PuzzleManager> GenerationFinished;
 
-    private void Start()
+    private void Awake()
     {
         _calculateSides = new(_color);
 

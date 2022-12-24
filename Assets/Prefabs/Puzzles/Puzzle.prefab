@@ -311,6 +311,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a95aaad50a2dbc847bb2ba25b1013dc6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _particle: {fileID: 4528143142341114558, guid: 01307c1b86a372443822d69b3d10df08, type: 3}
   <IsPlaced>k__BackingField: 0
   _animator: {fileID: 9115767137205049590}
   isGrabbed: 0
